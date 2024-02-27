@@ -170,7 +170,7 @@
                 </list>
               </option>
               <option name="name" value="BlogArticle" />
-              <option name="preName" value="my_" />
+              <option name="preName" value="blog_" />
               <option name="saveModelName" value="MyBlog-framework" />
               <option name="savePackageName" value="" />
               <option name="savePath" value="./MyBlog-framework/src/main/java" />
