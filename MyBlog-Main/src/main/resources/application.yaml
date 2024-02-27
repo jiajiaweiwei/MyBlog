@@ -22,7 +22,6 @@ mybatis-plus:
       logic-delete-value: 1       # 删除值 1
       logic-not-delete-value: 0   # 未删除值 0
       id-type: auto             #主键自增（不设置用 mybatis-plus默认生成的id）
-#  当用maven导入了mybatisplus的包时，必须要在yml配置中配置数据库的参数，否则运行boot启动类会报错
 
 #自定义格式， key: value    :后面必须要有空格
 oss:
