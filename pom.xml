@@ -9,11 +9,15 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <!-- 聚合模块 -->
     <modules>
         <!-- 子模块 -->
         <!--公共模块-->
         <module>MyBlog-framework</module>
+        <!-- 后台管理模块 -->
         <module>MyBlog-admin</module>
+        <!-- 前台模块 -->
+        <module>MyBlog-Main</module>
     </modules>
 
     <!--  父模块 jdk21 编码方式utf-8-->
