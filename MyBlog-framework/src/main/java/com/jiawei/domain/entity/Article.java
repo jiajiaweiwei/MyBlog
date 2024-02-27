@@ -1,20 +1,21 @@
 package com.jiawei.domain.entity;
 
 import java.util.Date;
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 /**
- * 文章表(BlogArticle)表实体类
+ * 文章表(Article)表实体类
  *
  * @author makejava
- * @since 2024-02-27 17:40:20
+ * @since 2024-02-27 17:45:39
  */
 @SuppressWarnings("serial")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BlogArticle  {
+public class Article  {
 
     private Long id;
 //标题
