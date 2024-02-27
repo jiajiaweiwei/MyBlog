@@ -26,6 +26,6 @@ mybatis-plus:
 
 #自定义格式， key: value    :后面必须要有空格
 oss:
-  accessKey: *******************************
-  secretKey: *******************************
+  accessKey: *
+  secretKey: *
   bucket: pk-sg-blog
