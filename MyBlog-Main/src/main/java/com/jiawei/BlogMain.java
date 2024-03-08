@@ -8,6 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @MapperScan("com.jiawei.mapper")
 public class BlogMain {
     public static void main(String[] args) {
+
         SpringApplication.run(BlogMain.class,args);
+        System.out.println("原神，启动！");
     }
 }
