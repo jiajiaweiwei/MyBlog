@@ -16,6 +16,10 @@ import org.springframework.stereotype.Component;
 
 import java.io.*;
 
+
+//≤‚ ‘OSS‘∆¥Ê¥¢
+
+
 @Component
 @SpringBootTest
 //@ConfigurationProperties(prefix = "oss")

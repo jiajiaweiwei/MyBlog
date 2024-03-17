@@ -61,5 +61,13 @@ public class Article  {
     private String categoryName;
 
 
+
+    //为将redis数据更新到MySQL使用
+    public Article(Long id, long viewCount) {
+        this.id = id;
+        this.viewCount = viewCount;
+    }
+
+
 }
 

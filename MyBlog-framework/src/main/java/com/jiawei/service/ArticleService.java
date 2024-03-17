@@ -13,4 +13,6 @@ public interface ArticleService extends IService<Article> {
     ResponseResult articleList(Integer pageNum, Integer pageSize, Long categoryId);
     //根据id获取文章详情
     ResponseResult getArticleDetail(Long id);
+    //文章浏览量增加时 自动更新redis的数据
+    ResponseResult updateViewCount(Long id);
 }
