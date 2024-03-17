@@ -56,6 +56,13 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
         </dependency>
+
+
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.0</version>
+        </dependency>
         <!--mybatisPlus依赖-->
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -104,11 +111,18 @@
         </dependency>
 
         <!--引入七牛云 SDK(一系列jar包) 依赖-->
-        <dependency>
+        <!--<dependency>
             <groupId>com.qiniu</groupId>
             <artifactId>qiniu-java-sdk</artifactId>
             <version>[7.7.0, 7.10.99]</version>
+        </dependency>-->
+
+        <dependency>
+            <groupId>com.qiniu</groupId>
+            <artifactId>qiniu-java-sdk</artifactId>
+            <version>[7.13.0, 7.13.99]</version>
         </dependency>
+
 
         <!--        自动配置注解处理器，解决 使用到ConfigurationProperties注解时无法识别-->
         <dependency>

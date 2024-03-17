@@ -6,6 +6,11 @@
     <file url="file://$PROJECT_DIR$/MyBlog-admin/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/MyBlog-admin/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/MyBlog-framework/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/MyBlog-framework/src/main/java/com/jiawei/config/FastJsonRedisSerializer.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/MyBlog-framework/src/main/java/com/jiawei/config/RedisConfig.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/MyBlog-framework/src/main/java/com/jiawei/utils/JwtUtil.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/MyBlog-framework/src/main/java/com/jiawei/utils/RedisCache.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/MyBlog-framework/src/main/java/com/jiawei/utils/WebUtils.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/MyBlog-framework/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
