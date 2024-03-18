@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace等于mapper接口类的全限定名
+ 创建日期： 2024/3/18
+ 创建时间：23：07：18
+ -->
+
+
+<mapper namespace="com.jiawei.mapper.RoleMapper">
+    <!--//否则查询用户所具有的角色信息-->
+    <select id="selectRoleKeyByUserId" resultType="string">
+        SELECT
+        r.`role_key`
+        FROM
+        `sys_user_role` ur
+        LEFT JOIN `sys_role` r ON ur.`role_id` = r.`id`
+        WHERE
+        ur.`user_id` = #{userId} AND
+        r.`status` = 0 AND
+        r.`del_flag` = 0
+    </select>
+</mapper>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace等于mapper接口类的全限定名
+ 创建日期： 2024/3/18
+ 创建时间：22：56：58
+ -->
+
+
+<mapper namespace="com.jiawei.mapper.MenuMapper">
+
+    <!--查询普通用户的权限信息  system:user:list等 需要多表连查  -->
+    <select id="selectPermsByUserId" resultType="string">
+
+        SELECT
+        DISTINCT m.perms
+        FROM
+        `sys_user_role` ur
+        LEFT JOIN `sys_role_menu` rm ON ur.`role_id` = rm.`role_id`
+        LEFT JOIN `sys_menu` m ON m.`id` = rm.`menu_id`
+        WHERE
+        ur.`user_id` = #{userId} AND
+        m.`menu_type` IN ('C','F') AND
+        m.`status` = 0 AND
+        m.`del_flag` = 0
+
+    </select>
+
+    <!--//如果是 获取所有符合要求的Menu-->
+    <select id="selectAllRouterMenu" resultType="com.jiawei.domain.entity.Menu">
+        SELECT
+        DISTINCT m.id, m.parent_id, m.menu_name, m.path, m.component,
+        m.visible, m.status, IFNULL(m.perms,'') AS perms, m.is_frame, m.menu_type,
+        m.icon, m.order_num, m.create_time
+        FROM
+        `sys_menu` m
+        WHERE
+        m.`menu_type` IN ('C','M') AND
+        m.`status` = 0 AND
+        m.`del_flag` = 0
+        ORDER BY
+        m.parent_id,m.order_num
+
+
+
+    </select>
+
+
+
+
+    <!--//否则 获取当前用户所具有的Menu-->
+    <select id="selectRouterMenuTreeByUserId" resultType="com.jiawei.domain.entity.Menu">
+
+        SELECT
+        DISTINCT m.id, m.parent_id, m.menu_name, m.path, m.component,
+        m.visible, m.status, IFNULL(m.perms,'') AS perms, m.is_frame, m.menu_type,
+        m.icon, m.order_num, m.create_time
+        FROM
+        `sys_user_role` ur
+        LEFT JOIN `sys_role_menu` rm ON ur.`role_id` = rm.`role_id`
+        LEFT JOIN `sys_menu` m ON m.`id` = rm.`menu_id`
+        WHERE
+        ur.`user_id` = #{userId} AND
+        m.`menu_type` IN ('C','M') AND
+        m.`status` = 0 AND
+        m.`del_flag` = 0
+        ORDER BY
+        m.parent_id,m.order_num
+
+
+    </select>
+
+
+</mapper>
