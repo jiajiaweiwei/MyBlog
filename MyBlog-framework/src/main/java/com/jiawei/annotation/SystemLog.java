@@ -17,6 +17,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface SystemLog {
 
+    //业务名称属性
     String BusinessName();
 
 

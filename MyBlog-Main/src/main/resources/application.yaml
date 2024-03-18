@@ -28,3 +28,37 @@ oss:
   accessKey: kH6uD0F_FMVoYNQRdq3zSa9uZAUhE4HIeKXQPeS-
   secretKey: Qa2pe34NHM04zdhHYC97ll_DPykxXQ-CvuzX9QAt
   bucket: my-blog-first
+
+
+
+
+
+springdoc:
+  swagger-ui:
+    # 禁止默认路径
+    disable-swagger-default-url: true
+    #自定义swagger前端请求路径，输入http：127.0.0.1:8080/swagger-ui.html会自动重定向到swagger页面
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs    #swagger后端请求地址
+    enabled: true   #是否开启文档功能
+  group-configs:
+    - group: 'com.hgh.yuzhan'
+      paths-to-match: '/**'
+      packages-to-scan: com.hgh.yuzhan    #按包路径匹配:一般到启动类的包名
+
+#knife4j相关配置 可以不用改
+knife4j:
+  enable: true    #开启knife4j，无需添加@EnableKnife4j注解
+  setting:
+    language: zh_cn   #中文
+    swagger-model-name: 实体类   #重命名SwaggerModel名称,默认
+  #开启Swagger的Basic认证功能,默认是false
+  basic:
+    enable: true
+    # Basic认证用户名
+    username: hgh
+    # Basic认证密码
+    password: a1234567

@@ -30,7 +30,7 @@ public class UserController {
 
 
     //用户中心信息更新
-    @PutMapping("/userInfo")
+    @PutMapping("/updateUserInfo")
     @SystemLog(BusinessName = "更新用户信息")  //指定切点和指定业务信息
     public ResponseResult updateUserInfo(@RequestBody User user){
         return userService.updateUserInfo(user);

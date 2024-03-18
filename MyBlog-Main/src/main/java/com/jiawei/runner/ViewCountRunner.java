@@ -11,9 +11,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-
+//初始化
 //springboot项目启动后  将文章浏览量加载到redis
 @Component
 public class ViewCountRunner implements CommandLineRunner {

@@ -26,7 +26,7 @@ public class CommentController {
     }
 
     //用户发表评论
-    @PostMapping
+    @PostMapping("/addComment")
     public ResponseResult addComment(@RequestBody Comment comment){
         return commentService.addComment(comment);
     }

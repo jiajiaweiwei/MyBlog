@@ -5,6 +5,7 @@ import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,39 +25,39 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true) //让set方法的返回值类型为这个实例对象本身
 public class Article  {
 
+    @Schema(description = "文章的主键") //swagger的文档注释
     @TableId
     private Long id;
-//标题
+    @Schema(description = "文章标题")
     private String title;
-//文章内容
+    @Schema(description = "文章内容")
     private String content;
-//文章摘要
+    @Schema(description = "文章摘要")
     private String summary;
-//所属分类id
+    @Schema(description = "文章所属分类id")
     private Long categoryId;
-//缩略图
+    @Schema(description = "文章缩略图地址")
     private String thumbnail;
-//是否置顶（0否，1是）
+    @Schema(description = "文章是否置顶（0否，1是）")
     private String isTop;
-//状态（0已发布，1草稿）
+    @Schema(description = "文章状态（0已发布，1草稿）")
     private String status;
-//访问量
+    @Schema(description = "文章点击量")
     private Long viewCount;
-//是否允许评论 1是，0否
+    @Schema(description = "文章是否允许评论 1是，0否")
     private String isComment;
-
+    @Schema(description = "文章作者id")
     private Long createBy;
-
+    @Schema(description = "文章创建时间")
     private Date createTime;
-
+    @Schema(description = "更新文章的作者id")
     private Long updateBy;
-
+    @Schema(description = "文章更新时间")
     private Date updateTime;
-//删除标志（0代表未删除，1代表已删除）
+    @Schema(description = "文章删除标志（0代表未删除，1代表已删除）")
     private Integer delFlag;
-
-
-    //别的表的字段
+    //别的表的字段 不封装。只在bean拷贝时使用
+    @Schema(description = "文章类型 别的表的字段 不封装。只在bean拷贝时使用")
     @TableField(exist = false)
     private String categoryName;
 

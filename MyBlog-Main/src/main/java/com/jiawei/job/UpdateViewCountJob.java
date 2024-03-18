@@ -25,7 +25,7 @@ public class UpdateViewCountJob {
     @Scheduled(cron = "0/55 * * * * ?") //有七个部分组成，中间以空格分隔
     public  void testJob(){
         //要执行的代码
-        System.out.println("每十分钟总执行redis文章浏览数据更新到MySQL综中");
+        System.out.println("每55秒执行redis文章浏览数据更新到MySQL综中");
         //获取redis中的浏览量数据
         Map<String, Integer> viewCountMap = redisCache.getCacheMap("article:viewCount");
         //生成对文章类
