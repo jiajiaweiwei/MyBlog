@@ -47,7 +47,7 @@ public class AdminLoginServiceImpl implements AdminLoginService {
         String userId = loginUser.getUser().getId().toString();
         String jwt = JwtUtil.createJWT(userId);
         //把用户信息存入redis
-        redisCache.setCacheObject("adminLogin:"+userId,loginUser);
+        redisCache.setCacheObject("adminLogin:" +userId,loginUser);
         //后台管理不需要用户信息，只用token即可
         HashMap<String, String> map = new HashMap<>();
         map.put("token",jwt);

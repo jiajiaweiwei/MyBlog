@@ -61,9 +61,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable());
-        //对于登录接口哦，允许匿名访问，其他接口都不需要认证即可访问
+        //对于登录接口哦，允许匿名访问，其他接口都不都需要认证
         http.authorizeHttpRequests().requestMatchers("/user/login").anonymous()
-                        .anyRequest().authenticated();
+                        .requestMatchers("/user/logout").authenticated()
+                        .anyRequest().permitAll();
 
 
         //关闭默认的注销功能接口

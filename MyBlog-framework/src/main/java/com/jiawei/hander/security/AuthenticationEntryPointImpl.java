@@ -29,6 +29,7 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
         if (authException instanceof BadCredentialsException){
             result =  ResponseResult.errorResult(AppHttpCodeEnum.LOGIN_ERROR.getCode(),authException.getMessage());
         }else if (authException instanceof InsufficientAuthenticationException){
+            //就是这里出的异常 要使用mybatis的逻辑删除的方法
             result =  ResponseResult.errorResult(AppHttpCodeEnum.NEED_LOGIN);
         }else {
             result =  ResponseResult.errorResult(AppHttpCodeEnum.SYSTEM_ERROR.getCode(),"未知错误");
