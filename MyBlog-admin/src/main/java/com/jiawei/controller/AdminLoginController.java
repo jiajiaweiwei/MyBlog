@@ -14,6 +14,9 @@ import com.jiawei.service.MenuService;
 import com.jiawei.service.RoleService;
 import com.jiawei.utils.BeanCopyUtils;
 import com.jiawei.utils.SecurityUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Tag(name = "后台用户管理接口")
 @RestController
 public class AdminLoginController {
 
@@ -38,8 +42,9 @@ public class AdminLoginController {
 
 
     //用户登录
+    @Operation(summary = "后台用户登录")
     @PostMapping("/user/login")
-    public ResponseResult login(@RequestBody User user){
+    public ResponseResult login(@Parameter(allowEmptyValue = false,description = "用户登录要的用户名和密码") @RequestBody User user){
         //使用自定义的全局异常
         if(!StringUtils.hasText(user.getUserName())){
             //提示，必须要传用户名
@@ -51,6 +56,7 @@ public class AdminLoginController {
 
 
     //admin后端获取用户  权限等信息
+    @Operation(summary = "后台获取用户权限信息")
     @GetMapping("/getInfo")
     public ResponseResult<AdminUserInfoVo> getInfo(){
         //获取当前登录的用户
@@ -70,6 +76,7 @@ public class AdminLoginController {
     }
 
     //查询路由
+    @Operation(summary = "后台获取用户路由信息")
     @GetMapping("/getRouters")
     public ResponseResult<RoutersVo> getRouters(){
         Long userId = SecurityUtils.getUserId();
@@ -78,6 +85,18 @@ public class AdminLoginController {
         //封装数据返回
         return ResponseResult.okResult(new RoutersVo(menus));
     }
+
+
+    //用户退出登录
+    @Operation(summary = "后台退出用户登录，并从redis中删除用户token等各种信息")
+    @PostMapping("user/logout")
+    public ResponseResult logout(){
+        return adminLoginService.logout();
+    }
+
+
+
+
 
 
 

@@ -7,6 +7,7 @@ import com.jiawei.domain.vo.AdminUserInfoVo;
 import com.jiawei.service.AdminLoginService;
 import com.jiawei.utils.JwtUtil;
 import com.jiawei.utils.RedisCache;
+import com.jiawei.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -53,16 +54,19 @@ public class AdminLoginServiceImpl implements AdminLoginService {
         return ResponseResult.okResult(map);
     }
 
-    //admin后端获取用户  权限等信息
+    //admin后端获取用户  权限等信息  使用封装好了的工具类
+
+
+
+
+    //后台退出用户登录，并从redis中删除用户token等各种信息
     @Override
-    public ResponseResult<AdminUserInfoVo> getInfo() {
-
-
-
-
-
-
-        return null;
+    public ResponseResult logout() {
+        //获取当前登录的用户id
+        Long userId = SecurityUtils.getUserId();
+        //删除redis中对应的用户信息 键就是login：加上用户id
+        redisCache.deleteObject("adminLogin:"+userId);
+        return ResponseResult.okResult();
     }
 
 

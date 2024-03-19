@@ -24,6 +24,8 @@ mybatis-plus:
       id-type: auto             #主键自增（不设置用 mybatis-plus默认生成的id）
 
 
+
+
 oss:
   accessKey: kH6uD0F_FMVoYNQRdq3zSa9uZAUhE4HIeKXQPeS-
   secretKey: Qa2pe34NHM04zdhHYC97ll_DPykxXQ-CvuzX9QAt
