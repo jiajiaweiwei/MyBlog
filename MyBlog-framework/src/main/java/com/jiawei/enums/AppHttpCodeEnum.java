@@ -18,7 +18,9 @@ public enum AppHttpCodeEnum {
     NICKNAME_NOT_NULL(509,"昵称不能为空！" ),
     PASSWORD_NOT_NULL(510,"密码不能为空！" ),
     EMAIL_NOT_NULL(511,"邮箱不能为空！" ),
-    NICKNAME_EXIST(512,"昵称已存在！" );
+    NICKNAME_EXIST(512,"昵称已存在！" ),
+    FILE_UPDATE_ERROR(513, "文件上传失败"),
+    MENU_PARENT_ERROR(514, "父菜单不能选择自己");
 
     int code;
     String msg;

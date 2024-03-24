@@ -2,10 +2,13 @@ package com.jiawei.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jiawei.constants.SystemConstants;
+import com.jiawei.domain.ResponseResult;
 import com.jiawei.domain.entity.Menu;
 import com.jiawei.mapper.MenuMapper;
 import com.jiawei.service.MenuService;
 import com.jiawei.utils.SecurityUtils;
+import lombok.experimental.Accessors;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +22,6 @@ import java.util.stream.Collectors;
  */
 @Service
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements MenuService {
-
 
 
 
@@ -89,6 +91,27 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
                 .collect(Collectors.toList());
         return childrenList;
     }
+
+
+
+    //新增角色 1.获取菜单树
+    @Override
+    public ResponseResult treeselect() {
+        //先查父角色
+        List<Menu> list = list();//所有的菜单
+        //设置label
+        list.stream().forEach(menu->menu.setLabel(menu.getMenuName()));
+        //获取顶级菜单
+        List<Menu> collect = list.stream().
+                filter(menuVoes -> menuVoes.getParentId().equals(0L)).
+                collect(Collectors.toList());
+        //设置子模块属性
+        collect.stream().forEach(menuVoes->menuVoes.setChildren(list.stream().filter(listOne->listOne.getParentId().equals(menuVoes.getId())).collect(Collectors.toList())));
+
+        return ResponseResult.okResult(collect);
+    }
+    //新增角色 2.增加新角色 在roleController中
+
 
 
 

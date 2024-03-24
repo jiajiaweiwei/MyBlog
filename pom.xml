@@ -71,10 +71,12 @@
             </dependency>
 
 
+            <!-- 一键将数据导出成excel的依赖 -->
+            <!--EasyExcel-->
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>easyexcel</artifactId>
-                <version>3.0.5</version>
+                <version>3.1.5</version> <!-- 用其他低版本会报错 -->
             </dependency>
 
 

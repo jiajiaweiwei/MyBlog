@@ -9,18 +9,15 @@ import com.jiawei.domain.vo.CommentVo;
 import com.jiawei.domain.vo.PageVo;
 import com.jiawei.enums.AppHttpCodeEnum;
 import com.jiawei.exception.SystemException;
-import com.jiawei.exception.UnLoginException;
 import com.jiawei.mapper.CommentMapper;
 import com.jiawei.service.CommentService;
 import com.jiawei.service.UserService;
 import com.jiawei.utils.BeanCopyUtils;
-import com.jiawei.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 评论表(Comment)表服务实现类
@@ -91,12 +88,16 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
                 list) {
             //获取本评论的用户昵称
             String nickName = userService.getById(co.getCreateBy()).getNickName();
+            String avatar = userService.getById(co.getCreateBy()).getAvatar();
             co.setUsername(nickName);
+            co.setAvatar(avatar);
             //toCommentId为-1，表示这是根评论，没有子评论
             if (co.getToCommentUserId() != -1){
                 //获取子评论的用户名
                 String nickName1 = userService.getById(co.getToCommentUserId()).getNickName();
+                String avatar1 = userService.getById(co.getCreateBy()).getAvatar();
                 co.setToCommentUserName(nickName1);
+                co.setAvatar(avatar);
             }
             //通过
         }

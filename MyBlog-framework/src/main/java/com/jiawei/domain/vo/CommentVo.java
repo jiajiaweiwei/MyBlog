@@ -1,7 +1,6 @@
 package com.jiawei.domain.vo;
 
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,6 +33,8 @@ public class CommentVo {
     private Long createBy;
     private Date createTime;
 
+    //评论头像
+    private String avatar;
 
     //子评论
     private List<CommentVo> children;

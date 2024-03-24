@@ -6,19 +6,32 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jiawei.constants.SystemConstants;
 import com.jiawei.domain.ResponseResult;
 import com.jiawei.domain.entity.Article;
+import com.jiawei.domain.entity.ArticleTag;
 import com.jiawei.domain.entity.Category;
+import com.jiawei.domain.entity.Tag;
+import com.jiawei.domain.to.AddArticleDto;
 import com.jiawei.domain.vo.ArticleDetailVo;
 import com.jiawei.domain.vo.ArticleListVo;
 import com.jiawei.domain.vo.HotArticleVo;
 import com.jiawei.domain.vo.PageVo;
 import com.jiawei.mapper.ArticleMapper;
+import com.jiawei.mapper.ArticleTagMapper;
+import com.jiawei.mapper.TagMapper;
 import com.jiawei.service.ArticleService;
+import com.jiawei.service.ArticleTagService;
 import com.jiawei.service.CategoryService;
+import com.jiawei.service.TagService;
 import com.jiawei.utils.BeanCopyUtils;
 import com.jiawei.utils.RedisCache;
+import com.jiawei.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -34,6 +47,13 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Autowired
     private RedisCache redisCache;
+
+
+    @Autowired
+    private ArticleTagService articleTagService;
+
+    @Autowired
+    private ArticleTagMapper articleTagMapper;
 
     //首页文章查询
     @Override
@@ -139,4 +159,82 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         redisCache.incrementCacheMapValue("article:viewCount",id.toString(),1);
         return ResponseResult.okResult();
     }
+
+
+
+
+
+    //新增加博客 添加事务的注解，避免当上传博客时 可能会有标签被删除的异常
+    @Override
+    @Transactional
+    public ResponseResult add(AddArticleDto articleDto) {
+        Article article = BeanCopyUtils.copyBean(articleDto, Article.class);
+        save(article);
+        //使用stream 将文章与标签多对多的关系存入数据库
+        //过滤获取
+        List<ArticleTag> articleTags = articleDto.getTags().stream().map(tarId -> new ArticleTag(article.getId(), tarId))
+                .collect(Collectors.toList());
+        //存入数据库
+        articleTagService.saveBatch(articleTags);
+        return ResponseResult.okResult();
+    }
+
+
+    //后台管理员查询博客数据  可以模糊查询
+    @Override
+    public ResponseResult<Article> articleListByAdmin(Integer pageNum, Integer pageSize, String title, String summary) {
+        LambdaQueryWrapper<Article> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.like(StringUtils.hasText(summary),Article::getSummary,summary);
+        queryWrapper.like(StringUtils.hasText(title),Article::getTitle,title);
+        Page<Article> page = new Page<>();
+        page.setSize(pageSize);
+        page.setCurrent(pageNum);
+        page(page,queryWrapper);
+        //pageVo 封装一个集合 一个记录总数
+        return ResponseResult.okResult(new PageVo(page.getRecords(), page.getTotal()));
+    }
+
+
+
+    //管理员修改文章回显
+    @Override
+    public ResponseResult adminGetArticleById(Integer articleId) {
+        Article article = getById(articleId);
+        AddArticleDto articleDto = BeanCopyUtils.copyBean(article, AddArticleDto.class);
+        LambdaQueryWrapper<ArticleTag> articleTagLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        articleTagLambdaQueryWrapper.eq(ArticleTag::getArticleId, articleId);
+        List<ArticleTag> articleTags = articleTagMapper.selectList(articleTagLambdaQueryWrapper);
+        List<Long> tagId = articleTags.stream().map(articleTag -> articleTag.getTagId()).collect(Collectors.toList());
+        articleDto.setTags(tagId);
+        return ResponseResult.okResult(articleDto);
+    }
+
+
+
+
+
+    //put更新博客信息
+    @Transactional
+    @Override
+    public ResponseResult updateArticleById(AddArticleDto articleDto) {
+        Article article = BeanCopyUtils.copyBean(articleDto, Article.class);
+        //使用stream 将文章与标签多对多的关系存入数据库
+        //过滤获取
+        List<ArticleTag> articleTags = articleDto.getTags().stream().map(tarId -> new ArticleTag(article.getId(), tarId))
+                .collect(Collectors.toList());
+        //先全部删除，再用plus集体插入 因为tag article关联表没有主键 所以没法更新 只能先删再插
+        LambdaQueryWrapper<ArticleTag> articleTagLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        articleTagLambdaQueryWrapper.eq(ArticleTag::getArticleId,articleDto.getId());
+        articleTagMapper.delete(articleTagLambdaQueryWrapper);
+        //集体插入
+        //再用plus集体插入
+        articleTagService.saveBatch(articleTags);
+        //更新文章信息
+        /*article.setUpdateTime(new Date()); 不用写 在mybatis配置中自动填充
+        article.setUpdateBy(SecurityUtils.getUserId());*/
+        article.setUpdateBy(SecurityUtils.getUserId());
+        updateById(article);
+        return ResponseResult.okResult();
+    }
+
 }

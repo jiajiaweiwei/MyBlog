@@ -25,4 +25,7 @@ public class SystemConstants {
 
     public static final String MENU = "C";//菜单
     public static final String BUTTON = "F";//按钮
+
+    public static final String NORMAL = "0";
+    public static final String ADMIN = "1"; //用户类型为管理员时，就为1
 }

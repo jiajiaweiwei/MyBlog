@@ -2,6 +2,9 @@ package com.jiawei.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jiawei.domain.ResponseResult;
 import com.jiawei.domain.entity.Category;
+import com.jiawei.domain.vo.CategoryVo;
+
+import java.util.List;
 
 /**
  * 分类表(Category)表服务接口
@@ -14,6 +17,6 @@ public interface CategoryService extends IService<Category> {
     ResponseResult getCategoryList();
 
 
-
-
+    //查询所有标签
+    List<CategoryVo> listAllCategory();
 }

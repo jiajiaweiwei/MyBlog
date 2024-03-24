@@ -1,5 +1,6 @@
 package com.jiawei.service;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.jiawei.domain.ResponseResult;
 import com.jiawei.domain.entity.Menu;
 
 import java.util.List;
@@ -15,4 +16,7 @@ public interface MenuService extends IService<Menu> {
     List<String> selectPermsByUserId(Long id);
     //查询menu 结果是tree的形式 vue动态路由的信息
     List<Menu> selectRouterMenuTreeByUserId(Long userId);
+
+    //新增角色 1.获取菜单树
+    ResponseResult treeselect();
 }
