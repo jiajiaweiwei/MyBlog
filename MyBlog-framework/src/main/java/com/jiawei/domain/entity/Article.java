@@ -67,11 +67,11 @@ public class Article  {
     private Date createTime;
 
     @Schema(description = "更新文章的作者id")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
+    //@TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updateBy;
 
     @Schema(description = "文章更新时间")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
+    //@TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 
     @Schema(description = "文章删除标志（0代表未删除，1代表已删除）")

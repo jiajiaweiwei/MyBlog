@@ -1,16 +1,20 @@
 package com.jiawei.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jiawei.constants.SystemConstants;
 import com.jiawei.domain.ResponseResult;
 import com.jiawei.domain.entity.Link;
 import com.jiawei.domain.vo.LinkVo;
+import com.jiawei.domain.vo.PageVo;
 import com.jiawei.mapper.LinkMapper;
 import com.jiawei.service.LinkService;
 import com.jiawei.utils.BeanCopyUtils;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,4 +39,18 @@ public class LinkServiceImpl extends ServiceImpl<LinkMapper, Link> implements Li
         //封装返回
         return ResponseResult.okResult(linkVoes);
     }
+    //分页查询所有友好链接
+    @Override
+    public ResponseResult listAll(Integer pageNum, Integer pageSize, String name,String status) {
+        LambdaQueryWrapper<Link> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Link::getDelFlag,SystemConstants.STATUS_NORMAL);
+        wrapper.eq(Link::getStatus,SystemConstants.STATUS_NORMAL);
+        wrapper.like(StringUtils.hasText(name),Link::getName,name);
+        Page<Link> linkPage = new Page<>();
+        page(linkPage,wrapper);
+        return ResponseResult.okResult(new PageVo(linkPage.getRecords(),linkPage.getTotal()));
+    }
+
+
+
 }

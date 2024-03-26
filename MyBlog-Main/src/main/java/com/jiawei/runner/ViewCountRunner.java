@@ -27,6 +27,7 @@ public class ViewCountRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         //应用启动时将文章浏览量加载到redis
+        System.out.println("应用启动时将文章浏览量加载到redis");
         //获取所有文章
         List<Article> articles = articleMapper.selectList(null);
         //使用stream流筛选数据

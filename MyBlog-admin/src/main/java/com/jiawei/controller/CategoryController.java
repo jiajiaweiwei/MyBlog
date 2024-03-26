@@ -16,12 +16,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.management.RuntimeErrorException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -62,9 +61,47 @@ public class CategoryController {
                     ResponseResult.errorResult(AppHttpCodeEnum.FILE_UPDATE_ERROR);
             WebUtils.renderString(response, JSON.toJSONString(result));
         }
+    }
 
+    //分页查询文章列表
+    @Operation(summary = "后台分页查询文章列表") //返回文件数据
+    @GetMapping("/list")
+    public ResponseResult list(Integer pageNum, Integer pageSize, String name,Integer status){
+        return categoryService.listByPage(pageNum,pageSize,name,status);
+    }
 
+    //新增分类
+    @Operation(summary = "后台新增分类") //返回文件数据
+    @PostMapping
+    public ResponseResult insertCategory(@RequestBody Category category){
+        return ResponseResult.okResult(categoryService.save(category));
+    }
 
+    //修改分类 1.回显
+    @Operation(summary = "修改分类回显") //返回文件数据
+    @GetMapping("{id}")
+    public ResponseResult update(@PathVariable("id") Long categoryId){
+        return ResponseResult.okResult(categoryService.getById(categoryId));
+    }
+    //修改分类 2.点击修改
+    @Operation(summary = "点击修改") //返回文件数据
+    @PutMapping
+    public ResponseResult put(@RequestBody  Category category){
+        return ResponseResult.okResult(categoryService.updateById(category));
+    }
+
+    //删除分类
+    @Operation(summary = "删除分类") //返回文件数据 (逻辑删除) 可以批量删除
+    @DeleteMapping("{id}")
+    public ResponseResult del(@PathVariable("id") String categoryId){
+        //同时满足批量删除和单个删除
+        //使用mybatis-plus逻辑删除
+        String[] idArray = categoryId.split(",");
+        List<Long> idList = new ArrayList<>();
+        for (String idStr : idArray) {
+            idList.add(Long.parseLong(idStr));
+        }
+        return ResponseResult.okResult(categoryService.removeByIds(idList));
     }
 
 

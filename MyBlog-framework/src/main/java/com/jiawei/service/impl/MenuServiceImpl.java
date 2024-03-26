@@ -4,15 +4,21 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jiawei.constants.SystemConstants;
 import com.jiawei.domain.ResponseResult;
 import com.jiawei.domain.entity.Menu;
+import com.jiawei.domain.entity.RoleMenu;
 import com.jiawei.mapper.MenuMapper;
 import com.jiawei.service.MenuService;
+import com.jiawei.service.RoleMenuService;
 import com.jiawei.utils.SecurityUtils;
 import lombok.experimental.Accessors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 菜单权限表(Menu)表服务实现类
@@ -94,23 +100,76 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
 
 
 
-    //新增角色 1.获取菜单树
-    @Override
-    public ResponseResult treeselect() {
+    //获取所有菜单树公用方法
+    public List<Menu> pub(){
+        LambdaQueryWrapper<Menu> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Menu::getStatus,SystemConstants.STATUS_NORMAL);
         //先查父角色
-        List<Menu> list = list();//所有的菜单
+        List<Menu> list = list(wrapper);//所有的菜单
         //设置label
         list.stream().forEach(menu->menu.setLabel(menu.getMenuName()));
-        //获取顶级菜单
-        List<Menu> collect = list.stream().
+        //获取顶级菜单 第一层 例：系统管理
+        List<Menu> grandfathers = list.stream().
                 filter(menuVoes -> menuVoes.getParentId().equals(0L)).
                 collect(Collectors.toList());
-        //设置子模块属性
-        collect.stream().forEach(menuVoes->menuVoes.setChildren(list.stream().filter(listOne->listOne.getParentId().equals(menuVoes.getId())).collect(Collectors.toList())));
-
-        return ResponseResult.okResult(collect);
+        //设置第二层children 例：用户管理
+        grandfathers.stream().forEach(menuVoes->menuVoes.setChildren(list.stream().filter(listOne->listOne.getParentId().equals(menuVoes.getId())).collect(Collectors.toList())));
+        //还要设置第三层children 例：用户修改
+        List<List<Menu>> fathers = grandfathers.stream().map(collect1 -> collect1.getChildren()).collect(Collectors.toList());
+        //set第三层属性 例子 用户修改
+        fathers.stream().forEach(father->father.stream().forEach(fa->fa.setChildren(list.stream().filter(li->li.getParentId().equals(fa.getId())).collect(Collectors.toList()))));
+        return grandfathers;
     }
-    //新增角色 2.增加新角色 在roleController中
+
+
+
+    //新增角色 1.获取菜单树 2.增加新角色 在roleController中
+    @Override
+    public ResponseResult treeselect() {
+        return ResponseResult.okResult(pub());
+    }
+    //修改角色方法回显时的   列表树（根据不同角色，列表树不同）
+    //2.加载对应角色菜单列表树接口(在menuController中)      查询对应角色的菜单树
+    @Autowired
+    private RoleMenuService roleMenuService;
+    //修改方法回显菜单树
+    @Override
+    public ResponseResult roleMenuTreeselect(Long roleId) {
+
+
+        //如果是超级管理员，返回所有的权限
+        if (roleId == 1L){
+            List<Menu> menus = pub();
+            //封装数据
+            HashMap hashMap = new HashMap();
+            hashMap.put("menus",menus);//所有的树
+            List<Long> Ids = list().stream().filter(li -> li.getStatus() != "1").map(listOne -> listOne.getId()).collect(Collectors.toList());
+            hashMap.put("checkedKeys",Ids);//关联的id
+            return ResponseResult.okResult(hashMap);
+        }
+
+        //开始获取顶级菜单
+        LambdaQueryWrapper<RoleMenu> roleMenuLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        roleMenuLambdaQueryWrapper.eq(RoleMenu::getRoleId,roleId);
+        //拿到该角色的所有menu 及顶级菜单
+        List<RoleMenu> roleMenus = roleMenuService.list(roleMenuLambdaQueryWrapper);
+        //获取该顶级菜单里所有的menuId 且状态正常
+        List<Long> menuIds = roleMenus.stream().map(roleMenu -> roleMenu.getMenuId()).collect(Collectors.toList());
+        LambdaQueryWrapper<Menu> menuLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        menuLambdaQueryWrapper.eq(Menu::getStatus,SystemConstants.STATUS_NORMAL);
+        menuLambdaQueryWrapper.in(Menu::getId,menuIds);
+        List<Menu> list = list(menuLambdaQueryWrapper);
+        List<Long> menuIds2 = list.stream().map(li -> li.getId()).collect(Collectors.toList());
+        //封装数据
+        HashMap hashMap = new HashMap();
+        hashMap.put("menus",pub());//所有的树
+        hashMap.put("checkedKeys",menuIds2);//关联的id
+        return ResponseResult.okResult(hashMap);
+
+    }
+
+
+
 
 
 

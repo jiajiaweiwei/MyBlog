@@ -2,13 +2,11 @@ package com.jiawei.domain.entity;
 import java.util.Date;
 import java.io.Serializable;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+
 /**
  * 角色信息表(Role)表实体类
  *
@@ -39,6 +37,7 @@ public class Role {
     private String status;
 
     //删除标志（0代表存在 1代表删除）
+    @TableLogic // 标记逻辑删除字段
     private String delFlag;
 
     //创建者

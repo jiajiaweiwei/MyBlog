@@ -56,12 +56,24 @@ public class MenuController {
     }
 
 
-    // 1.获取菜单树 在menuController中
+    //新增角色方法
+    // 1.获取菜单树 在menuController中 2.插入角色数据 在roleController中
     @GetMapping("/treeselect")
     public ResponseResult treeselect(){
         //使用MenuChildrenVo类 分装数据
         return menuService.treeselect();
     }
+    //修改角色方法回显时的   第二部   查询列表树（根据不同角色，列表树不同）
+    //2.加载对应角色菜单列表树接口(在menuController中)      查询对应角色的菜单树
+    @GetMapping("/roleMenuTreeselect/{id}")
+    public ResponseResult roleMenuTreeSelect(@PathVariable("id") Long roleId){
+        return menuService.roleMenuTreeselect(roleId);
+    }
+
+
+
+
+
 
 
 }

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -81,6 +82,29 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         LinkedList<RoleMenu> roleMenus = new LinkedList<>();
         for (int i = 0; i < menuIds.size(); i++) {
             roleMenus.add(new RoleMenu(newRoleId, menuIds.get(i)));
+        }
+        roleMenuService.saveBatch(roleMenus);
+        return ResponseResult.okResult();
+    }
+
+    //3.修改
+    @Transactional
+    @Override
+    public ResponseResult put(InsertRoleTo insertRoleTo) {
+        //获取role对象
+        Role role = BeanCopyUtils.copyBean(insertRoleTo, Role.class);
+        //更新角色表信息
+        updateById(role);
+        //先将role_menu表 再重新 的相关联记录全部删除再重新插入
+        //删除所有的
+        LambdaQueryWrapper<RoleMenu> roleMenuWrapper = new LambdaQueryWrapper<>();
+        roleMenuWrapper.eq(RoleMenu::getRoleId,insertRoleTo.getId());
+        roleMenuService.remove(roleMenuWrapper);
+        //重新插入新的菜单信息
+        List<Long> menuIds = insertRoleTo.getMenuIds();
+        LinkedList<RoleMenu> roleMenus = new LinkedList<>();
+        for (int i = 0; i < menuIds.size(); i++) {
+            roleMenus.add(new RoleMenu(insertRoleTo.getId(), menuIds.get(i)));
         }
         roleMenuService.saveBatch(roleMenus);
         return ResponseResult.okResult();

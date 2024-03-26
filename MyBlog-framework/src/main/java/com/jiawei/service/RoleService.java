@@ -24,4 +24,6 @@ public interface RoleService extends IService<Role> {
     // 1.获取菜单树 在menuController中
     //2.插入角色信息 (改两个表 sys_role 和sys_role_menu )
     ResponseResult insertRole(InsertRoleTo insertRoleTo);
+    //3.修改
+    ResponseResult put(InsertRoleTo insertRoleTo);
 }

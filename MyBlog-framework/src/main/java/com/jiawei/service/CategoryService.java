@@ -19,4 +19,6 @@ public interface CategoryService extends IService<Category> {
 
     //查询所有标签
     List<CategoryVo> listAllCategory();
+    //后台分页查询文章列表
+    ResponseResult listByPage(Integer pageNum, Integer pageSize, String name,Integer status);
 }

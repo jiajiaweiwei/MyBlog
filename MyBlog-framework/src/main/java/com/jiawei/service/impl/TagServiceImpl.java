@@ -40,7 +40,7 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
         tagPage.setCurrent(pageNum);
         page(tagPage,tagLambdaQueryWrapper);
         //封装数据返回
-        //pageVo 封装一个集合 一个记录总数
+        //自定义的pageVo 封装一个集合 一个记录总数
         PageVo pageVo = new PageVo(tagPage.getRecords(),tagPage.getTotal());
         return ResponseResult.okResult(pageVo);
     }

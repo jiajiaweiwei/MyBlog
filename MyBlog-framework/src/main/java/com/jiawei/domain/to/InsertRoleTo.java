@@ -19,8 +19,8 @@ public class InsertRoleTo {
     @TableId
     private Long id;
 
-    //角色名称
-    private String roleName;
+    //备注
+    private String remark;
 
     //角色权限字符串
     private String roleKey;
@@ -31,10 +31,10 @@ public class InsertRoleTo {
     //角色状态（0正常 1停用）
     private String status;
 
-    private List<Long> menuIds;
+    //角色名称
+    private String roleName;
 
-    //备注
-    private String remark;
+    private List<Long> menuIds;
 
 
 

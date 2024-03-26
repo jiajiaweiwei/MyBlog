@@ -17,7 +17,7 @@ public interface LinkService extends IService<Link> {
     //查询所有友链
     ResponseResult getAllLink();
 
-
-
+    //分页查询所有友好链接
+    ResponseResult listAll(Integer pageNum, Integer pageSize, String name,String status);
 
 }

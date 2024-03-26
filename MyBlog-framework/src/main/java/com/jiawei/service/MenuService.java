@@ -19,4 +19,7 @@ public interface MenuService extends IService<Menu> {
 
     //新增角色 1.获取菜单树
     ResponseResult treeselect();
+    //修改角色方法回显时的   列表树（根据不同角色，列表树不同）
+    //2.加载对应角色菜单列表树接口(在menuController中)      查询对应角色的菜单树
+    ResponseResult roleMenuTreeselect(Long roleId);
 }

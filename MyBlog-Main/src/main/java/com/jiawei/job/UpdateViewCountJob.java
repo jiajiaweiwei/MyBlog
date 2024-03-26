@@ -6,7 +6,7 @@ import com.jiawei.utils.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -14,18 +14,20 @@ import java.util.stream.Collectors;
 
 //定时任务
 @Component
-public class UpdateViewCountJob {
+public class UpdateViewCountJob  {
 
     @Autowired
     private RedisCache redisCache;
     @Autowired
     private ArticleService articleService;
 
+
     //要求每十分钟总执行redis文章浏览数据更新到MySQL综中
-    @Scheduled(cron = "0/55 * * * * ?") //有七个部分组成，中间以空格分隔
+    @Transactional
+    @Scheduled(cron = "0/60 * * * * ?") //有七个部分组成，中间以空格分隔
     public  void testJob(){
         //要执行的代码
-        System.out.println("每55秒执行redis文章浏览数据更新到MySQL综中");
+        System.out.println("每60秒执行redis文章浏览数据更新到MySQL综中");
         //获取redis中的浏览量数据
         Map<String, Integer> viewCountMap = redisCache.getCacheMap("article:viewCount");
         //生成对文章类
@@ -36,8 +38,6 @@ public class UpdateViewCountJob {
         //更新到数据库中
         articleService.updateBatchById(articleList);
     }
-
-
 
 
 }
