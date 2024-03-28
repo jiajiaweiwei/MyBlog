@@ -22,12 +22,12 @@ public class UpdateViewCountJob  {
     private ArticleService articleService;
 
 
-    //要求每十分钟总执行redis文章浏览数据更新到MySQL综中
+    //要求每隔24小时执行redis文章浏览数据更新到MySQL综中
     @Transactional
-    @Scheduled(cron = "0/60 * * * * ?") //有七个部分组成，中间以空格分隔
+    @Scheduled(cron = "0 0 */2 * * ?\n") //有七个部分组成，中间以空格分隔
     public  void testJob(){
         //要执行的代码
-        System.out.println("每60秒执行redis文章浏览数据更新到MySQL综中");
+        System.out.println("每24小时执行redis文章浏览数据更新到MySQL综中");
         //获取redis中的浏览量数据
         Map<String, Integer> viewCountMap = redisCache.getCacheMap("article:viewCount");
         //生成对文章类

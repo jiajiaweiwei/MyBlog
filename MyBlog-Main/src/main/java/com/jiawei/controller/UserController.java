@@ -24,6 +24,7 @@ public class UserController {
 
     //用户中心信息查询
     @GetMapping("/userInfo")
+    @SystemLog(BusinessName = "用户信息查询")  //指定切点和指定业务信息
     public ResponseResult userInfo(){
         return userService.userInfo();
     }

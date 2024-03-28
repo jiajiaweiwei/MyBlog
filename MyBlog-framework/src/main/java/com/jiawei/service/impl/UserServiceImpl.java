@@ -101,11 +101,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
 
+    @Transactional
     @Override
     public ResponseResult register(User user) {
         postUserPublic(user);
+        user.setCreateTime(new Date());
+        user.setUpdateTime(new Date());
         save(user);
-        //前台注册 默认为普通用户
+        //前台注册 默认为普通用户 普通用户 的id为2L
+        //更新完用户表再获取他的用户id
+        Long userId = user.getId();
+        //后台注册绑定用户与指定role的关系 更新role_user表
+        userRoleService.save(new UserRole(userId,2L));
         return ResponseResult.okResult();
     }
 
@@ -161,6 +168,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public ResponseResult adminPostUser(User user) {
         //公用的用户注册信息
         postUserPublic(user);
+        user.setCreateTime(new Date());
         save(user);
         List<Long> roleIds = user.getRoleIds();
         //更新完用户表再获取他的用户id

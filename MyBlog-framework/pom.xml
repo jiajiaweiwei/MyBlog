@@ -145,6 +145,7 @@
 
     </dependencies>
 
+    <!--自动检测主类-->
     <build>
         <finalName>MyBlog-framework</finalName>
     </build>
