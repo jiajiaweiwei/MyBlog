@@ -11,7 +11,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class BlogMain {
     public static void main(String[] args) {
 
-        System.out.println("原神，启动！");
         SpringApplication.run(BlogMain.class,args);
     }
 }

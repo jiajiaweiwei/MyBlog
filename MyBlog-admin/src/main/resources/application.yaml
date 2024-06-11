@@ -57,7 +57,7 @@ knife4j:
   setting:
     language: zh_cn   #中文
     swagger-model-name: 实体类   #重命名SwaggerModel名称,默认
-  #开启Swagger的Basic认证功能,默认是false
+  #开启Swagger的Basic认证功能,默认是false   地址http://localhost:7777/doc.html
   basic:
     enable: true
     # Basic认证用户名

@@ -46,7 +46,7 @@ springdoc:
     path: /v3/api-docs    #swagger后端请求地址
     enabled: true   #是否开启文档功能
   group-configs:
-    - group: 'com.hgh.yuzhan'
+    - group: 'com.blog.jiawei'
       paths-to-match: '/**'
       packages-to-scan: com.jiawei    #按包路径匹配:一般到启动类的包名
 

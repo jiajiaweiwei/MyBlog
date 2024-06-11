@@ -114,7 +114,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         if (!StringUtils.hasText(comment.getContent())){
             throw new SystemException(AppHttpCodeEnum.COMMENT_BOT_NULL);
         }
-        //TODO 自己写的暂时不要乱用
+        //TODO
         /*//验证用户登录状态，如果没登录不能发表评论，响应对应异常
         if (SecurityUtils.getAuthentication() == null){
             throw new UnLoginException(AppHttpCodeEnum.NEED_LOGIN);

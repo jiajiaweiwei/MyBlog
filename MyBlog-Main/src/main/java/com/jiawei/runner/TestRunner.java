@@ -12,7 +12,7 @@ public class TestRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("------ 原神 ，再次启动！ ---------");
+        System.out.println("----------启动！ ---------");
 
 
     }

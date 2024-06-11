@@ -81,22 +81,10 @@ public class Article  {
     @Schema(description = "文章类型 别的表的字段 不封装。只在bean拷贝时使用")
     @TableField(exist = false)
     private String categoryName;
-
-
-
-
-
-
-
-
-
-
     //为将redis数据更新到MySQL使用
     public Article(Long id, long viewCount) {
         this.id = id;
         this.viewCount = viewCount;
     }
-
-
 }
 

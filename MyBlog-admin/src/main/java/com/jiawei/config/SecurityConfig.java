@@ -68,8 +68,6 @@ public class SecurityConfig {
         http.authorizeHttpRequests().requestMatchers("/user/login").anonymous()
                         .requestMatchers("/user/logout").authenticated()
                         .anyRequest().authenticated();
-
-
         //关闭默认的注销功能接口
         http.logout().disable();
         //允许跨域
@@ -80,12 +78,7 @@ public class SecurityConfig {
         http.exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint)
                 .accessDeniedHandler(accessDeniedHandler);
-
-
-
         return http.build();
-
-
     }
 
 
